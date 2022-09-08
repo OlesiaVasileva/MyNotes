@@ -8,5 +8,6 @@
     <string name="overline">Overline</string>
     <string name="button">BUTTON</string>
     <string name="content">У вас нет заметок. "\n" Нажмите + чтобы добавить</string>
+    <string name="menu_item_search">menu_item_search</string>
 
 </resources>
