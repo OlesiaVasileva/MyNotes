@@ -1,51 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/empty_main_"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/empty_main_">
 
-
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tool_bar"
-        android:layout_width="360dp"
-        android:layout_height="56dp" />
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <View
+    <ImageView
         android:id="@+id/image_empty_screen"
         android:layout_width="142dp"
-        android:layout_height="101dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="109dp"
-        android:layout_marginTop="239dp"
-        android:background="@drawable/img_empty_screen" />
+        android:layout_height="110dp"
+        android:src="@drawable/img_empty_screen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45"/>
 
     <TextView
         android:id="@+id/text_empty_screen"
-        android:layout_width="283dp"
-        android:layout_height="48dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="356dp"
-        android:layout_marginStart="38dp"
-        android:layout_marginEnd="39dp"
-        android:gravity="center|top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
         android:text="@string/content"
-        android:textAppearance="@style/body_1" />
+        android:textAppearance="@style/body_1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_empty_screen"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/float_act_button"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:src="@drawable/ic_plus"
-        app:tint="@color/white"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/accent"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="16dp"/>
+        android:src="@drawable/ic_plus"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
