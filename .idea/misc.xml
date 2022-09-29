@@ -11,6 +11,8 @@
         <entry key="app/src/main/res/drawable/rectangle_3.xml" value="0.20833333333333334" />
         <entry key="app/src/main/res/drawable/states.xml" value="0.46030534351145036" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/note.xml" value="0.45" />
+        <entry key="app/src/main/res/menu/tool_bar_menu.xml" value="0.2390625" />
         <entry key="app/src/main/res/menu/toolbar_menu.xml" value="0.2390625" />
       </map>
     </option>

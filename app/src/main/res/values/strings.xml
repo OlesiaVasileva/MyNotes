@@ -9,5 +9,8 @@
     <string name="button">BUTTON</string>
     <string name="content">У вас нет заметок. "\n" Нажмите + чтобы добавить</string>
     <string name="menu_item_search">menu_item_search</string>
+    <string name="headline_example">There’s gonna be a note’s headline</string>
+    <string name="text_example">There’s gonna be a note’s text</string>
+    <string name="date_example">There’s gonna be a note’s date</string>
 
 </resources>
