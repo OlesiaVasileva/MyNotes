@@ -12,4 +12,5 @@
     <color name="colorPrimary">#222530</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#6B2B2D31</color>
+    <color name="colorFloatButton">#DD033DEC</color>
 </resources>
