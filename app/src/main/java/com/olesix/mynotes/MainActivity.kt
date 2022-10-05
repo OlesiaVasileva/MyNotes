@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val listOfTestNotes = fillList()
+        val listOfTestNotes = NotesList.notes
         if (listOfTestNotes.isNotEmpty()) {
             val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
             recyclerView.visibility = View.VISIBLE
@@ -33,25 +33,6 @@ class MainActivity : AppCompatActivity() {
                 textEmptyScreen.visibility = View.VISIBLE
             }
         }
-    }
-
-    private fun fillList(): List<Note> {
-        val note1 = Note(
-            "01", "Список дел на сегодня",
-            "Решить задачу на связный список", "#EEEEF4", System.currentTimeMillis()
-        )
-        val note2 = Note(
-            "02", "Что посмотреть",
-            "Видео с собеседования на Андроид разработчика", "#EEEEF4",
-            System.currentTimeMillis()
-        )
-        val note3 = Note(
-            "03", "Купить в продуктовом",
-            "Хлеб, молоко, орехи", "#EEEEF4", System.currentTimeMillis()
-        )
-
-        return listOf(note1, note2, note3)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
