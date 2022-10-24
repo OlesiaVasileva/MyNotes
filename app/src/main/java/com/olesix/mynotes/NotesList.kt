@@ -2,7 +2,7 @@ package com.olesix.mynotes
 
 object NotesList {
 
-    var notes = fillList()
+    val notes = fillList()
 
     private fun fillList(): MutableList<Note> {
         val note1 = Note(

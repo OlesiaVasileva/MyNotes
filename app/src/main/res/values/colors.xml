@@ -9,8 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="color_note_ex">#F8D9DE</color>
 
-    <color name="colorPrimary">#222530</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#6B2B2D31</color>
-    <color name="colorFloatButton">#DD033DEC</color>
+    <color name="color_primary">#222530</color>
+    <color name="color_primary_dark">#000000</color>
+    <color name="color_accent">#6B2B2D31</color>
+    <color name="color_float_button">#DD033DEC</color>
 </resources>
