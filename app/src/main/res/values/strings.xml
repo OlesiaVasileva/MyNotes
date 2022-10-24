@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">MyNotes</string>
+    <string name="headline_4">Headline 4</string>
+    <string name="headline_5">Headline 5</string>
+    <string name="headline_6">Headline 6</string>
+    <string name="body_1">Body 1</string>
+    <string name="subtitle_1">Subtitle 1</string>
+    <string name="overline">Overline</string>
+    <string name="button">BUTTON</string>
+    <string name="content">У вас нет заметок. "\n" Нажмите + чтобы добавить</string>
+    <string name="menu_item_search">menu_item_search</string>
+    <string name="headline_example">There’s gonna be a note’s headline</string>
+    <string name="text_example">There’s gonna be a note’s text</string>
+    <string name="date_example">There’s gonna be a note’s date</string>
+
+</resources>
