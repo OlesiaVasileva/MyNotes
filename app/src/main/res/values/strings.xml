@@ -12,5 +12,10 @@
     <string name="headline_example">There’s gonna be a note’s headline</string>
     <string name="text_example">There’s gonna be a note’s text</string>
     <string name="date_example">There’s gonna be a note’s date</string>
+    <string name="edit_header">Введите заголовок</string>
+    <string name="edit_text">Введите текст</string>
+    <string name="menu_action_delete">menu_action_delete</string>
+    <string name="menu_action_share">menu_action_share</string>
+    <string name="menu_action_add_photo">menu_action_add_photo</string>
 
 </resources>

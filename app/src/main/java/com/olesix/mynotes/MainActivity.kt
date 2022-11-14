@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val listOfTestNotes = NotesList.notes
         if (listOfTestNotes.isNotEmpty()) {
-            val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+            val recyclerView: RecyclerView = findViewById(R.id.recycler_view)
             recyclerView.visibility = View.VISIBLE
             recyclerView.layoutManager = GridLayoutManager(this, 2)
             recyclerView.adapter = NoteRecyclerAdapter(listOfTestNotes)
