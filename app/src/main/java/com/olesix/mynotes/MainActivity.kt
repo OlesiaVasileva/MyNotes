@@ -37,10 +37,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         val floatAcButton: FloatingActionButton = findViewById(R.id.float_act_button)
-        startEditActivity(floatAcButton)
-    }
-
-    private fun startEditActivity(floatAcButton: FloatingActionButton) {
         floatAcButton.setOnClickListener {
             val intent = Intent(this@MainActivity, EditActivity::class.java)
             startActivity(intent)
