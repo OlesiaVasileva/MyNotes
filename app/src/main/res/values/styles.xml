@@ -44,4 +44,22 @@
         <item name="android:fontFamily">@font/source_sans_pro_semibold</item>
     </style>
 
+    <style name="toolbarColoredBackArrow">
+        <item name="android:textColorSecondary">@color/black</item>
+    </style>
+
+    <style name="fabColoredCentralElement">
+        <item name="android:textColorSecondary">@color/white</item>
+    </style>
+
+    <style name="divider_toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/color_hint</item>
+    </style>
+
+    <style name="divider_hint">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/color_divider_hint</item>
+    </style>
+
 </resources>

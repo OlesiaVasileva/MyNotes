@@ -12,5 +12,7 @@
     <color name="color_primary">#222530</color>
     <color name="color_primary_dark">#000000</color>
     <color name="color_accent">#6B2B2D31</color>
-    <color name="color_float_button">#DD033DEC</color>
+    <color name="color_float_button">#E92B70F8</color>
+    <color name="color_hint">#70222530</color>
+    <color name="color_divider_hint">#30222530</color>
 </resources>
