@@ -33,9 +33,7 @@ class EditActivity : AppCompatActivity() {
         val text = editText.text.toString().trim()
         if (header.isNotEmpty() || text.isNotEmpty()) {
             val date = System.currentTimeMillis()
-            val colors = listOf("#E2F3F0", "#C3D9FF", "#FFF5E6", "#F8D9DE", "#FDCCCA")
-            val randomColor = colors.random()
-            val note = Note(id, header, text, randomColor, date)
+            val note = Note(id, header, text, date)
             NotesList.addNote(note)
         }
     }
