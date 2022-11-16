@@ -18,9 +18,19 @@ import com.olesix.mynotes.editing.EditActivity
 const val LOG_TAG = "LOG_MY_NOTES"
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setDataInViews()
+        val floatAcButton: FloatingActionButton = findViewById(R.id.float_act_button)
+        floatAcButton.setOnClickListener {
+            val intent = Intent(this@MainActivity, EditActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun setDataInViews() {
         val listOfTestNotes = NotesList.notes
         if (listOfTestNotes.isNotEmpty()) {
             val recyclerView: RecyclerView = findViewById(R.id.recycler_view)
@@ -36,11 +46,11 @@ class MainActivity : AppCompatActivity() {
                 textEmptyScreen.visibility = View.VISIBLE
             }
         }
-        val floatAcButton: FloatingActionButton = findViewById(R.id.float_act_button)
-        floatAcButton.setOnClickListener {
-            val intent = Intent(this@MainActivity, EditActivity::class.java)
-            startActivity(intent)
-        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setDataInViews()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

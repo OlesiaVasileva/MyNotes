@@ -21,4 +21,8 @@ object NotesList {
 
         return mutableListOf(note1, note2, note3)
     }
+
+    fun addNote (note: Note) {
+        notes.add(note)
+    }
 }
