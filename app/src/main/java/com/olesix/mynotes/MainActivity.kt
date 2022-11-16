@@ -32,6 +32,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun setDataInViews() {
         val listOfTestNotes = NotesList.notes
+        listOfTestNotes.sortByDescending { note ->
+            note.data
+        }
         if (listOfTestNotes.isNotEmpty()) {
             val recyclerView: RecyclerView = findViewById(R.id.recycler_view)
             recyclerView.visibility = View.VISIBLE
