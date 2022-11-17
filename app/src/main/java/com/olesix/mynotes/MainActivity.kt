@@ -16,6 +16,7 @@ import com.olesix.mynotes.editing.EditActivity
 
 
 const val LOG_TAG = "LOG_MY_NOTES"
+const val INTENT_ID = "NOTE_ID"
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,6 +41,13 @@ class MainActivity : AppCompatActivity() {
             recyclerView.visibility = View.VISIBLE
             recyclerView.layoutManager = GridLayoutManager(this, 2)
             recyclerView.adapter = NoteRecyclerAdapter(listOfTestNotes)
+            val adapter = recyclerView.adapter as NoteRecyclerAdapter
+            adapter.onItemClick = { note ->
+                val intent = Intent(this@MainActivity, EditActivity::class.java)
+                intent.putExtra(INTENT_ID, note.id)
+                startActivity(intent)
+                Log.d(LOG_TAG, "Note.id = ${note.id}")
+            }
         } else {
             if (supportActionBar != null) {
                 supportActionBar!!.hide()

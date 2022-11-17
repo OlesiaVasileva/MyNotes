@@ -9,11 +9,13 @@ import com.olesix.mynotes.NotesList
 import com.olesix.mynotes.R
 import java.util.*
 
+const val INTENT_ID = "NOTE_ID"
 
 class EditActivity : AppCompatActivity() {
 
     private lateinit var editTextHeader: EditText
     private lateinit var editText: EditText
+    var id: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +26,13 @@ class EditActivity : AppCompatActivity() {
         editTextHeader = findViewById(R.id.edit_header)
         toolbar.setNavigationOnClickListener {
             onBackPressed()
+        }
+        id = intent.getStringExtra(INTENT_ID)
+        NotesList.notes.forEach{ note ->
+            if (id == note.id) {
+                editTextHeader.setText(note.header)
+                editText.setText(note.text)
+            }
         }
     }
 
@@ -40,6 +49,8 @@ class EditActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        addNewNote()
+        if (id.isNullOrEmpty()) {
+            addNewNote()
+        }
     }
 }
