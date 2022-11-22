@@ -13,10 +13,10 @@ import java.util.*
 
 
 
-class NoteRecyclerAdapter(private val notes: List<Note>) : RecyclerView
+class NoteRecyclerAdapter(private val onItemClick: ((Note) -> Unit)?) : RecyclerView
 .Adapter<NoteRecyclerAdapter.NoteViewHolder>() {
 
-    var onItemClick: ((Note) -> Unit)? = null
+    lateinit var notes: List<Note>
     private val simpleDateFormat = SimpleDateFormat("dd.MM.yy", Locale.getDefault())
 
     class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

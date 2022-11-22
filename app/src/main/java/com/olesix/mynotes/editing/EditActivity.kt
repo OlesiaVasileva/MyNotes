@@ -51,6 +51,13 @@ class EditActivity : AppCompatActivity() {
         super.onBackPressed()
         if (id.isNullOrEmpty()) {
             addNewNote()
+        } else {
+            NotesList.notes.forEach{ note ->
+                if (id == note.id) {
+                    note.header = editTextHeader.text.toString()
+                    note.text = editText.text.toString()
+                }
+            }
         }
     }
 }

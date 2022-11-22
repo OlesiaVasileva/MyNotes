@@ -20,34 +20,29 @@ const val INTENT_ID = "NOTE_ID"
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var adapter: NoteRecyclerAdapter
+    private lateinit var recyclerView: RecyclerView
+    private val listOfTestNotes = NotesList.notes
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setDataInViews()
         val floatAcButton: FloatingActionButton = findViewById(R.id.float_act_button)
         floatAcButton.setOnClickListener {
             val intent = Intent(this@MainActivity, EditActivity::class.java)
             startActivity(intent)
         }
-    }
-
-    private fun setDataInViews() {
-        val listOfTestNotes = NotesList.notes
-        listOfTestNotes.sortByDescending { note ->
-            note.data
+        recyclerView = findViewById(R.id.recycler_view)
+        recyclerView.layoutManager = GridLayoutManager(this, 2)
+        adapter = NoteRecyclerAdapter { note ->
+            val intent = Intent(this@MainActivity, EditActivity::class.java)
+            intent.putExtra(INTENT_ID, note.id)
+            startActivity(intent)
+            Log.d(LOG_TAG, "Note.id = ${note.id}")
         }
+        recyclerView.adapter = adapter
         if (listOfTestNotes.isNotEmpty()) {
-            val recyclerView: RecyclerView = findViewById(R.id.recycler_view)
             recyclerView.visibility = View.VISIBLE
-            recyclerView.layoutManager = GridLayoutManager(this, 2)
-            recyclerView.adapter = NoteRecyclerAdapter(listOfTestNotes)
-            val adapter = recyclerView.adapter as NoteRecyclerAdapter
-            adapter.onItemClick = { note ->
-                val intent = Intent(this@MainActivity, EditActivity::class.java)
-                intent.putExtra(INTENT_ID, note.id)
-                startActivity(intent)
-                Log.d(LOG_TAG, "Note.id = ${note.id}")
-            }
         } else {
             if (supportActionBar != null) {
                 supportActionBar!!.hide()
@@ -57,11 +52,20 @@ class MainActivity : AppCompatActivity() {
                 textEmptyScreen.visibility = View.VISIBLE
             }
         }
+        setData()
+    }
+
+    private fun setData() {
+        listOfTestNotes.sortByDescending { note ->
+            note.data
+        }
+        adapter.notes = listOfTestNotes
+        adapter.notifyDataSetChanged()
     }
 
     override fun onResume() {
         super.onResume()
-        setDataInViews()
+        setData()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
