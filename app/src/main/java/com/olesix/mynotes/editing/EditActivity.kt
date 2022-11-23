@@ -1,6 +1,7 @@
 package com.olesix.mynotes.editing
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.EditText
 import android.widget.TextView
@@ -34,6 +35,9 @@ class EditActivity : AppCompatActivity() {
             onBackPressed()
         }
         id = intent.getStringExtra(INTENT_ID)
+        if (id != null) {
+            textViewDate.visibility = View.VISIBLE
+        }
         NotesList.notes.forEach { note ->
             if (id == note.id) {
                 editTextHeader.setText(note.header)
@@ -65,14 +69,23 @@ class EditActivity : AppCompatActivity() {
         } else {
             NotesList.notes.forEach { note ->
                 if (id == note.id) {
-                    note.header = editTextHeader.text.toString()
-                    note.text = editText.text.toString()
-                    note.data = System.currentTimeMillis()
-                    val date = Date(note.data)
-                    textViewDate.text = this.getString(
-                        R.string.date_display,
-                        simpleDateFormat.format(date).toString()
-                    )
+                    if (editTextHeader.text.toString().isEmpty() &&
+                        editText.text.toString().isEmpty()
+                    ) {
+                        NotesList.notes.remove(note)
+                        return
+                    } else if (editTextHeader.text.toString() != note.header ||
+                        editText.text.toString() != note.text
+                    ) {
+                        note.header = editTextHeader.text.toString()
+                        note.text = editText.text.toString()
+                        note.data = System.currentTimeMillis()
+                        val date = Date(note.data)
+                        textViewDate.text = this.getString(
+                            R.string.date_display,
+                            simpleDateFormat.format(date).toString()
+                        )
+                    }
                 }
             }
         }
