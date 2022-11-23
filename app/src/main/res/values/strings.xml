@@ -17,5 +17,6 @@
     <string name="menu_action_delete">menu_action_delete</string>
     <string name="menu_action_share">menu_action_share</string>
     <string name="menu_action_add_photo">menu_action_add_photo</string>
+    <string name="date_display">Изменено %s</string>
 
 </resources>
