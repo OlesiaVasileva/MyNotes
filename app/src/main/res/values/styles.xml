@@ -62,4 +62,8 @@
         <item name="android:background">@color/color_divider_hint</item>
     </style>
 
+    <style name="alertDialogCustom" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
 </resources>

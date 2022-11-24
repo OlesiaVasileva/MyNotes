@@ -5,7 +5,10 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
+import com.google.android.material.bottomappbar.BottomAppBar
 import com.olesix.mynotes.Note
 import com.olesix.mynotes.NotesList
 import com.olesix.mynotes.R
@@ -20,6 +23,7 @@ class EditActivity : AppCompatActivity() {
     private lateinit var editTextHeader: EditText
     private lateinit var editText: EditText
     private lateinit var textViewDate: TextView
+    private lateinit var bottomAppBar: BottomAppBar
     var id: String? = null
     private val simpleDateFormat = SimpleDateFormat("dd.MM.yy HH:mm", Locale.getDefault())
 
@@ -31,6 +35,7 @@ class EditActivity : AppCompatActivity() {
         editText = findViewById(R.id.edit_text)
         editTextHeader = findViewById(R.id.edit_header)
         textViewDate = findViewById(R.id.text_view_date)
+        bottomAppBar = findViewById(R.id.bottom_appbar)
         toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
@@ -47,6 +52,47 @@ class EditActivity : AppCompatActivity() {
                     R.string.date_display,
                     simpleDateFormat.format(date).toString()
                 )
+            }
+        }
+        callAlertDialog()
+    }
+
+    private fun callAlertDialog() {
+        bottomAppBar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_delete -> {
+                    val dialogBuilder = AlertDialog.Builder(this, R.style.alertDialogCustom)
+                    dialogBuilder.setMessage(getString(R.string.message_alert_dialog))
+                        .setPositiveButton(
+                            getString(R.string.button_delete)
+                        ) { _, _ ->
+                            if (id != null) {
+                                val note = NotesList.notes.filter { it.id == id }[0]
+                                NotesList.notes.remove(note)
+                            }
+                            finish()
+                        }
+                        .setNegativeButton(getString(R.string.button_cancel)) { dialog, _ ->
+                            dialog.cancel()
+                        }
+                    val alert = dialogBuilder.create()
+                    alert.setTitle(getString(R.string.title_alert_dialog))
+                    alert.show()
+                    alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.color_float_button
+                        )
+                    )
+                    alert.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.color_float_button
+                        )
+                    )
+                    true
+                }
+                else -> false
             }
         }
     }
