@@ -13,10 +13,9 @@ import java.util.*
 
 
 
-class NoteRecyclerAdapter(private val onItemClick: ((Note) -> Unit)?) : RecyclerView
+class NoteRecyclerAdapter(private val notes: List<Note>) : RecyclerView
 .Adapter<NoteRecyclerAdapter.NoteViewHolder>() {
 
-    lateinit var notes: List<Note>
     private val simpleDateFormat = SimpleDateFormat("dd.MM.yy", Locale.getDefault())
 
     class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -39,9 +38,6 @@ class NoteRecyclerAdapter(private val onItemClick: ((Note) -> Unit)?) : Recycler
         val date = Date(note.data)
         holder.date.text = simpleDateFormat.format(date).toString()
         holder.bgColor.setCardBackgroundColor(Color.parseColor(note.color))
-        holder.itemView.setOnClickListener {
-            onItemClick?.invoke(notes[position])
-        }
     }
 
     override fun getItemCount() = notes.size

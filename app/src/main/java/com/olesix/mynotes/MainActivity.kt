@@ -16,33 +16,17 @@ import com.olesix.mynotes.editing.EditActivity
 
 
 const val LOG_TAG = "LOG_MY_NOTES"
-const val INTENT_ID = "NOTE_ID"
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var adapter: NoteRecyclerAdapter
-    private lateinit var recyclerView: RecyclerView
-    private val listOfTestNotes = NotesList.notes
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val floatAcButton: FloatingActionButton = findViewById(R.id.float_act_button)
-        floatAcButton.setOnClickListener {
-            val intent = Intent(this@MainActivity, EditActivity::class.java)
-            startActivity(intent)
-        }
-        recyclerView = findViewById(R.id.recycler_view)
-        recyclerView.layoutManager = GridLayoutManager(this, 2)
-        adapter = NoteRecyclerAdapter { note ->
-            val intent = Intent(this@MainActivity, EditActivity::class.java)
-            intent.putExtra(INTENT_ID, note.id)
-            startActivity(intent)
-            Log.d(LOG_TAG, "Note.id = ${note.id}")
-        }
-        recyclerView.adapter = adapter
+        val listOfTestNotes = NotesList.notes
         if (listOfTestNotes.isNotEmpty()) {
+            val recyclerView: RecyclerView = findViewById(R.id.recycler_view)
             recyclerView.visibility = View.VISIBLE
+            recyclerView.layoutManager = GridLayoutManager(this, 2)
+            recyclerView.adapter = NoteRecyclerAdapter(listOfTestNotes)
         } else {
             if (supportActionBar != null) {
                 supportActionBar!!.hide()
@@ -52,20 +36,15 @@ class MainActivity : AppCompatActivity() {
                 textEmptyScreen.visibility = View.VISIBLE
             }
         }
-        setData()
+        val floatAcButton: FloatingActionButton = findViewById(R.id.float_act_button)
+        startEditActivity(floatAcButton)
     }
 
-    private fun setData() {
-        listOfTestNotes.sortByDescending { note ->
-            note.data
+    private fun startEditActivity(floatAcButton: FloatingActionButton) {
+        floatAcButton.setOnClickListener {
+            val intent = Intent(this@MainActivity, EditActivity::class.java)
+            startActivity(intent)
         }
-        adapter.notes = listOfTestNotes
-        adapter.notifyDataSetChanged()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setData()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

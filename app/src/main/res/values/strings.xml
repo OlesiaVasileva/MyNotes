@@ -17,10 +17,5 @@
     <string name="menu_action_delete">menu_action_delete</string>
     <string name="menu_action_share">menu_action_share</string>
     <string name="menu_action_add_photo">menu_action_add_photo</string>
-    <string name="date_display">Изменено %s</string>
-    <string name="message_alert_dialog">Вы действительно хотите удалить заметку?</string>
-    <string name="button_delete">Удалить</string>
-    <string name="button_cancel">Отмена</string>
-    <string name="title_alert_dialog">Удаление заметки</string>
 
 </resources>
