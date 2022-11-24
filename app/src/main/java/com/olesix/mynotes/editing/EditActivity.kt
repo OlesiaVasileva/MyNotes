@@ -1,5 +1,6 @@
 package com.olesix.mynotes.editing
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -90,6 +91,20 @@ class EditActivity : AppCompatActivity() {
                             R.color.color_float_button
                         )
                     )
+                    true
+                }
+                R.id.action_share -> {
+                    val header = editTextHeader.text.toString().trim()
+                    val text = editText.text.toString().trim()
+                    val sendIntent: Intent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TITLE, header)
+                        putExtra(Intent.EXTRA_TEXT, text)
+                        type = "text/plain"
+                    }
+
+                    val shareIntent = Intent.createChooser(sendIntent, null)
+                    startActivity(shareIntent)
                     true
                 }
                 else -> false
