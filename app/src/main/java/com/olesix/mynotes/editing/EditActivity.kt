@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.olesix.mynotes.Note
 import com.olesix.mynotes.NotesList
 import com.olesix.mynotes.R
@@ -38,6 +39,10 @@ class EditActivity : AppCompatActivity() {
         textViewDate = findViewById(R.id.text_view_date)
         bottomAppBar = findViewById(R.id.bottom_appbar)
         toolbar.setNavigationOnClickListener {
+            onBackPressed()
+        }
+        val floatActButton: FloatingActionButton = findViewById(R.id.float_act_button)
+        floatActButton.setOnClickListener {
             onBackPressed()
         }
         id = intent.getStringExtra(INTENT_ID)
@@ -122,22 +127,28 @@ class EditActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        addNote()
+        super.onBackPressed()
+    }
+
+    private fun addNote() {
         if (id.isNullOrEmpty()) {
             addNewNote()
         } else {
             val newNote = NotesList.getNoteById(id!!)
             if (editTextHeader.text.toString().isEmpty() && editText.text.toString().isEmpty()) {
                 NotesList.deleteNote(newNote)
-                return
-            } else if (editTextHeader.text.toString() != newNote.header
-                || editText.text.toString() != newNote.text
-            ) {
-                newNote.header = editTextHeader.text.toString()
-                newNote.text = editText.text.toString()
-                newNote.data = System.currentTimeMillis()
-                NotesList.updateNote(newNote)
+            } else if (editTextHeader.text.toString() != newNote.header ||
+                editText.text.toString() != newNote.text) {
+                updateNote(newNote)
             }
         }
-        super.onBackPressed()
+    }
+
+    private fun updateNote(newNote: Note) {
+        newNote.header = editTextHeader.text.toString()
+        newNote.text = editText.text.toString()
+        newNote.data = System.currentTimeMillis()
+        NotesList.updateNote(newNote)
     }
 }
