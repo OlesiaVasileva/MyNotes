@@ -12,7 +12,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-
 class NoteRecyclerAdapter(private val onItemClick: ((Note) -> Unit)?) : RecyclerView
 .Adapter<NoteRecyclerAdapter.NoteViewHolder>() {
 
@@ -40,7 +39,7 @@ class NoteRecyclerAdapter(private val onItemClick: ((Note) -> Unit)?) : Recycler
         holder.date.text = simpleDateFormat.format(date).toString()
         holder.bgColor.setCardBackgroundColor(Color.parseColor(note.color))
         holder.itemView.setOnClickListener {
-            onItemClick?.invoke(notes[position])
+            onItemClick?.invoke(note)
         }
     }
 
