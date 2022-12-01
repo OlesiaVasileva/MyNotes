@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.olesix.mynotes.editing.EditActivity
+import com.olesix.mynotes.search.SearchActivity
 
 
 const val LOG_TAG = "LOG_MY_NOTES"
@@ -83,6 +84,8 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_search -> {
                 Log.d(LOG_TAG, "Search clicked")
+                val intent = Intent(this@MainActivity, SearchActivity::class.java)
+                startActivity(intent)
                 true
             }
             else -> super.onOptionsItemSelected(item)

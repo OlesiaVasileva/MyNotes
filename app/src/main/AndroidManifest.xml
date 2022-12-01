@@ -23,6 +23,12 @@
             android:name=".editing.EditActivity"
             android:theme="@style/Theme.MyNotesNoActBar">
         </activity>
+
+        <activity
+            android:name=".search.SearchActivity"
+            android:theme="@style/Theme.MyNotesNoActBar"
+            android:label="">
+        </activity>
     </application>
 
 </manifest>
