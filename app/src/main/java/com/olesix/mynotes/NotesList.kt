@@ -42,4 +42,15 @@ object NotesList {
             }
         }
     }
+
+    fun getNotesBySearch(inputString: String) : MutableList<Note> {
+        val foundNotes = mutableListOf<Note>()
+        notes.forEach { note ->
+            if (note.header.contains(inputString, ignoreCase = true) || note.text.contains(
+                    inputString, ignoreCase = true)) {
+                foundNotes.add(note)
+            }
+        }
+        return foundNotes
+    }
 }
