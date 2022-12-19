@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.olesix.mynotes.Note
 import com.olesix.mynotes.NotesList
 import com.olesix.mynotes.R
@@ -40,76 +41,78 @@ class EditActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
+        val floatActButton: FloatingActionButton = findViewById(R.id.float_act_button)
+        floatActButton.setOnClickListener {
+            onBackPressed()
+        }
         id = intent.getStringExtra(INTENT_ID)
         if (id != null) {
             textViewDate.visibility = View.VISIBLE
+            val note = NotesList.getNoteById(id!!)
+            editTextHeader.setText(note.header)
+            editText.setText(note.text)
+            val date = Date(note.data)
+            textViewDate.text = this.getString(
+                R.string.date_display,
+                simpleDateFormat.format(date).toString()
+            )
         }
-        NotesList.notes.forEach { note ->
-            if (id == note.id) {
-                editTextHeader.setText(note.header)
-                editText.setText(note.text)
-                val date = Date(note.data)
-                textViewDate.text = this.getString(
-                    R.string.date_display,
-                    simpleDateFormat.format(date).toString()
-                )
-            }
-        }
-        callAlertDialog()
-    }
-
-    private fun callAlertDialog() {
         bottomAppBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_delete -> {
-                    val dialogBuilder = AlertDialog.Builder(this, R.style.alertDialogCustom)
-                    dialogBuilder.setMessage(getString(R.string.message_alert_dialog))
-                        .setPositiveButton(
-                            getString(R.string.button_delete)
-                        ) { _, _ ->
-                            if (id != null) {
-                                val note = NotesList.notes.filter { it.id == id }[0]
-                                NotesList.notes.remove(note)
-                            }
-                            finish()
-                        }
-                        .setNegativeButton(getString(R.string.button_cancel)) { dialog, _ ->
-                            dialog.cancel()
-                        }
-                    val alert = dialogBuilder.create()
-                    alert.setTitle(getString(R.string.title_alert_dialog))
-                    alert.show()
-                    alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(
-                        ContextCompat.getColor(
-                            applicationContext,
-                            R.color.color_float_button
-                        )
-                    )
-                    alert.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(
-                        ContextCompat.getColor(
-                            applicationContext,
-                            R.color.color_float_button
-                        )
-                    )
+                    deleteNoteFromDialog()
                     true
                 }
                 R.id.action_share -> {
-                    val header = editTextHeader.text.toString().trim()
-                    val text = editText.text.toString().trim()
-                    val sendIntent: Intent = Intent().apply {
-                        action = Intent.ACTION_SEND
-                        putExtra(Intent.EXTRA_TITLE, header)
-                        putExtra(Intent.EXTRA_TEXT, text)
-                        type = "text/plain"
-                    }
-
-                    val shareIntent = Intent.createChooser(sendIntent, null)
-                    startActivity(shareIntent)
+                    shareNoteFromDialog()
                     true
                 }
                 else -> false
             }
         }
+    }
+
+    private fun deleteNoteFromDialog() {
+        val dialogBuilder = AlertDialog.Builder(this, R.style.alertDialogCustom)
+        dialogBuilder.setMessage(getString(R.string.message_alert_dialog))
+            .setPositiveButton(
+                getString(R.string.button_delete)
+            ) { _, _ ->
+                if (id != null) {
+                    val note = NotesList.notes.filter { it.id == id }[0]
+                    NotesList.notes.remove(note)
+                }
+                finish()
+            }
+            .setNegativeButton(getString(R.string.button_cancel)) { dialog, _ ->
+                dialog.cancel()
+            }
+        val alert = dialogBuilder.create()
+        alert.setTitle(getString(R.string.title_alert_dialog))
+        alert.show()
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(
+            ContextCompat.getColor(
+                applicationContext,
+                R.color.color_float_button
+            )
+        )
+        alert.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(
+            ContextCompat.getColor(
+                applicationContext,
+                R.color.color_float_button
+            )
+        )
+    }
+
+    private fun shareNoteFromDialog() {
+        val header = editTextHeader.text.toString().trim()
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, header)
+            type = "text/plain"
+        }
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        startActivity(shareIntent)
     }
 
     private fun addNewNote() {
@@ -124,31 +127,28 @@ class EditActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        addNote()
         super.onBackPressed()
+    }
+
+    private fun addNote() {
         if (id.isNullOrEmpty()) {
             addNewNote()
         } else {
-            NotesList.notes.forEach { note ->
-                if (id == note.id) {
-                    if (editTextHeader.text.toString().isEmpty() &&
-                        editText.text.toString().isEmpty()
-                    ) {
-                        NotesList.notes.remove(note)
-                        return
-                    } else if (editTextHeader.text.toString() != note.header ||
-                        editText.text.toString() != note.text
-                    ) {
-                        note.header = editTextHeader.text.toString()
-                        note.text = editText.text.toString()
-                        note.data = System.currentTimeMillis()
-                        val date = Date(note.data)
-                        textViewDate.text = this.getString(
-                            R.string.date_display,
-                            simpleDateFormat.format(date).toString()
-                        )
-                    }
-                }
+            val newNote = NotesList.getNoteById(id!!)
+            if (editTextHeader.text.toString().isEmpty() && editText.text.toString().isEmpty()) {
+                NotesList.deleteNote(newNote)
+            } else if (editTextHeader.text.toString() != newNote.header ||
+                editText.text.toString() != newNote.text) {
+                updateNote(newNote)
             }
         }
+    }
+
+    private fun updateNote(newNote: Note) {
+        newNote.header = editTextHeader.text.toString()
+        newNote.text = editText.text.toString()
+        newNote.data = System.currentTimeMillis()
+        NotesList.updateNote(newNote)
     }
 }

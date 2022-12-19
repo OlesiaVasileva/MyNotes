@@ -4,8 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/arrow_back.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable/arrow_back_white.xml" value="0.23671875" />
         <entry key="app/src/main/res/drawable/empty_main.xml" value="0.25" />
         <entry key="app/src/main/res/drawable/empty_main_.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable/ic_cancel.xml" value="0.23671875" />
         <entry key="app/src/main/res/drawable/ic_check.xml" value="0.26328125" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.20833333333333334" />
         <entry key="app/src/main/res/drawable/ic_magnify.xml" value="0.4444444444444444" />
@@ -15,11 +17,15 @@
         <entry key="app/src/main/res/drawable/states.xml" value="0.46030534351145036" />
         <entry key="app/src/main/res/layout/activity_edit.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_search.xml" value="0.2125" />
         <entry key="app/src/main/res/layout/item_note.xml" value="0.2390625" />
         <entry key="app/src/main/res/layout/note.xml" value="0.45" />
+        <entry key="app/src/main/res/menu/action_search.xml" value="0.2125" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.2390625" />
+        <entry key="app/src/main/res/menu/search_menu.xml" value="0.2125" />
         <entry key="app/src/main/res/menu/tool_bar_menu.xml" value="0.2390625" />
         <entry key="app/src/main/res/menu/toolbar_menu.xml" value="0.2390625" />
+        <entry key="app/src/main/res/xml/searchable.xml" value="0.2125" />
       </map>
     </option>
   </component>

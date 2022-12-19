@@ -21,7 +21,36 @@ object NotesList {
         return mutableListOf(note1, note2, note3)
     }
 
-    fun addNote (note: Note) {
+    fun addNote(note: Note) {
         notes.add(note)
+    }
+
+    fun getNoteById(id: String): Note {
+        return notes.first { note -> note.id == id }
+    }
+
+    fun deleteNote(note: Note) {
+        notes.remove(note)
+    }
+
+    fun updateNote(newNote: Note) {
+        notes.forEach {
+            if (it.id == newNote.id) {
+                it.header = newNote.header
+                it.text = newNote.text
+                it.data = newNote.data
+            }
+        }
+    }
+
+    fun getNotesBySearch(inputString: String) : MutableList<Note> {
+        val foundNotes = mutableListOf<Note>()
+        notes.forEach { note ->
+            if (note.header.contains(inputString, ignoreCase = true) || note.text.contains(
+                    inputString, ignoreCase = true)) {
+                foundNotes.add(note)
+            }
+        }
+        return foundNotes
     }
 }

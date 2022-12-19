@@ -9,10 +9,12 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.olesix.mynotes.editing.EditActivity
+import com.olesix.mynotes.search.SearchActivity
 
 
 const val LOG_TAG = "LOG_MY_NOTES"
@@ -22,6 +24,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var adapter: NoteRecyclerAdapter
     private lateinit var recyclerView: RecyclerView
+    private lateinit var toolbar: ActionBar
+    private lateinit var imageEmptyScreen: ImageView
+    private lateinit var textEmptyScreen: TextView
     private val listOfTestNotes = NotesList.notes
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +37,11 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, EditActivity::class.java)
             startActivity(intent)
         }
+        if (supportActionBar != null) {
+            toolbar = supportActionBar as ActionBar
+        }
+        imageEmptyScreen = findViewById(R.id.image_empty_screen)
+        textEmptyScreen = findViewById(R.id.text_empty_screen)
         recyclerView = findViewById(R.id.recycler_view)
         recyclerView.layoutManager = GridLayoutManager(this, 2)
         adapter = NoteRecyclerAdapter { note ->
@@ -41,26 +51,23 @@ class MainActivity : AppCompatActivity() {
             Log.d(LOG_TAG, "Note.id = ${note.id}")
         }
         recyclerView.adapter = adapter
-        if (listOfTestNotes.isNotEmpty()) {
-            recyclerView.visibility = View.VISIBLE
-        } else {
-            if (supportActionBar != null) {
-                supportActionBar!!.hide()
-                val imageEmptyScreen: ImageView = findViewById(R.id.image_empty_screen)
-                imageEmptyScreen.visibility = View.VISIBLE
-                val textEmptyScreen: TextView = findViewById(R.id.text_empty_screen)
-                textEmptyScreen.visibility = View.VISIBLE
-            }
-        }
         setData()
     }
 
     private fun setData() {
-        listOfTestNotes.sortByDescending { note ->
-            note.data
+        if (listOfTestNotes.isEmpty() && toolbar != null) {
+            toolbar!!.hide()
+            imageEmptyScreen.visibility = View.VISIBLE
+            textEmptyScreen.visibility = View.VISIBLE
+        } else {
+            toolbar.show()
+            imageEmptyScreen.visibility = View.INVISIBLE
+            textEmptyScreen.visibility = View.INVISIBLE
+            recyclerView.visibility = View.VISIBLE
+            listOfTestNotes.sortByDescending { note -> note.data }
+            adapter.notes = listOfTestNotes
+            adapter.notifyDataSetChanged()
         }
-        adapter.notes = listOfTestNotes
-        adapter.notifyDataSetChanged()
     }
 
     override fun onResume() {
@@ -77,6 +84,8 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_search -> {
                 Log.d(LOG_TAG, "Search clicked")
+                val intent = Intent(this@MainActivity, SearchActivity::class.java)
+                startActivity(intent)
                 true
             }
             else -> super.onOptionsItemSelected(item)
