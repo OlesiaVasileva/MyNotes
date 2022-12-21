@@ -19,11 +19,8 @@ import android.text.TextWatcher
 
 class SearchActivity : AppCompatActivity() {
 
-    private lateinit var adapter: NoteRecyclerAdapter
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var listOfFoundNotes: MutableList<Note>
+    private lateinit var searchEditText: EditText
 
-    private lateinit var editText: EditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -33,33 +30,26 @@ class SearchActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
-        editText = findViewById(R.id.search_edittext)
-        recyclerView = findViewById(R.id.recycler_view)
+        searchEditText = findViewById(R.id.search_edittext)
+        val recyclerView: RecyclerView = findViewById(R.id.recycler_view)
         recyclerView.layoutManager = GridLayoutManager(this, 2)
-        adapter = NoteRecyclerAdapter { note ->
+        val adapter: NoteRecyclerAdapter = NoteRecyclerAdapter { note ->
             val intent = Intent(this@SearchActivity, EditActivity::class.java)
             intent.putExtra(INTENT_ID, note.id)
             startActivity(intent)
             Log.d(LOG_TAG, "Note.id = ${note.id}")
         }
         recyclerView.adapter = adapter
-        adapter.notes = NotesList.notes
-        editText.addTextChangedListener(object : TextWatcher {
+        adapter.setData(NotesList.getListOfNotes())
+        searchEditText.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
 
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
             override fun afterTextChanged(s: Editable) {
-                listOfFoundNotes = NotesList.getNotesBySearch(s.toString())
-                setData()
+                adapter.setData(NotesList.getNotesBySearch(s.toString()))
             }
         })
-    }
-
-    private fun setData() {
-        listOfFoundNotes.sortByDescending { note -> note.data }
-        adapter.notes = listOfFoundNotes
-        adapter.notifyDataSetChanged()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -71,10 +61,10 @@ class SearchActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_cancel_search -> {
                 Log.d(LOG_TAG, "Cancel search clicked")
-                if (editText.text.isEmpty()) {
+                if (searchEditText.text.isEmpty()) {
                     onBackPressed()
                 } else {
-                    editText.text.clear()
+                    searchEditText.text.clear()
                 }
                 true
             }

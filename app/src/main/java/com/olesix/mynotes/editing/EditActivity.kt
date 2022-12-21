@@ -51,7 +51,7 @@ class EditActivity : AppCompatActivity() {
             val note = NotesList.getNoteById(id!!)
             editTextHeader.setText(note.header)
             editText.setText(note.text)
-            val date = Date(note.data)
+            val date = Date(note.date)
             textViewDate.text = this.getString(
                 R.string.date_display,
                 simpleDateFormat.format(date).toString()
@@ -79,8 +79,8 @@ class EditActivity : AppCompatActivity() {
                 getString(R.string.button_delete)
             ) { _, _ ->
                 if (id != null) {
-                    val note = NotesList.notes.filter { it.id == id }[0]
-                    NotesList.notes.remove(note)
+                    val note = NotesList.getListOfNotes().first { it.id == id }
+                    NotesList.deleteNote(note)
                 }
                 finish()
             }
@@ -139,7 +139,8 @@ class EditActivity : AppCompatActivity() {
             if (editTextHeader.text.toString().isEmpty() && editText.text.toString().isEmpty()) {
                 NotesList.deleteNote(newNote)
             } else if (editTextHeader.text.toString() != newNote.header ||
-                editText.text.toString() != newNote.text) {
+                editText.text.toString() != newNote.text
+            ) {
                 updateNote(newNote)
             }
         }
@@ -148,7 +149,7 @@ class EditActivity : AppCompatActivity() {
     private fun updateNote(newNote: Note) {
         newNote.header = editTextHeader.text.toString()
         newNote.text = editText.text.toString()
-        newNote.data = System.currentTimeMillis()
+        newNote.date = System.currentTimeMillis()
         NotesList.updateNote(newNote)
     }
 }

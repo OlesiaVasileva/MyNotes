@@ -9,7 +9,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -24,10 +23,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var adapter: NoteRecyclerAdapter
     private lateinit var recyclerView: RecyclerView
-    private lateinit var toolbar: ActionBar
     private lateinit var imageEmptyScreen: ImageView
     private lateinit var textEmptyScreen: TextView
-    private val listOfTestNotes = NotesList.notes
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +33,6 @@ class MainActivity : AppCompatActivity() {
         floatAcButton.setOnClickListener {
             val intent = Intent(this@MainActivity, EditActivity::class.java)
             startActivity(intent)
-        }
-        if (supportActionBar != null) {
-            toolbar = supportActionBar as ActionBar
         }
         imageEmptyScreen = findViewById(R.id.image_empty_screen)
         textEmptyScreen = findViewById(R.id.text_empty_screen)
@@ -55,18 +49,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setData() {
-        if (listOfTestNotes.isEmpty() && toolbar != null) {
-            toolbar!!.hide()
+        if (NotesList.getListOfNotes().isEmpty()) {
+            supportActionBar?.hide()
             imageEmptyScreen.visibility = View.VISIBLE
             textEmptyScreen.visibility = View.VISIBLE
         } else {
-            toolbar.show()
+            supportActionBar?.show()
             imageEmptyScreen.visibility = View.INVISIBLE
             textEmptyScreen.visibility = View.INVISIBLE
             recyclerView.visibility = View.VISIBLE
-            listOfTestNotes.sortByDescending { note -> note.data }
-            adapter.notes = listOfTestNotes
-            adapter.notifyDataSetChanged()
+            adapter.setData(NotesList.getListOfNotes())
         }
     }
 
