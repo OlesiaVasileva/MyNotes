@@ -33,4 +33,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_toolbar" />
 
+    <ImageView
+        android:id="@+id/image_empty_screen"
+        android:layout_width="142dp"
+        android:layout_height="110dp"
+        android:gravity="center"
+        android:src="@drawable/img_search_empty_screen"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_toolbar"
+        app:layout_constraintVertical_bias="0.45" />
+
+    <TextView
+        android:id="@+id/text_empty_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/search_screen_empty_result"
+        android:textAppearance="@style/body_1"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_empty_screen" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
