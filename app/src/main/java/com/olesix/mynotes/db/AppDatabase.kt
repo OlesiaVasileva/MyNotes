@@ -9,6 +9,8 @@ import com.olesix.mynotes.Note
 @Database(entities = [Note::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
+    abstract fun noteDao(): NoteDao
+
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null
@@ -22,11 +24,8 @@ abstract class AppDatabase : RoomDatabase() {
                 ?: synchronized(this) {
                     val instance = Room.databaseBuilder(
                         context.applicationContext,
-                        AppDatabase::class.java,
-                        "app_database"
-                    )
-                        .createFromAsset("database/note.db")
-                        .build()
+                        AppDatabase::class.java, "NotesDatabase"
+                    ).allowMainThreadQueries().build()
                     INSTANCE = instance
                     return instance
                 }

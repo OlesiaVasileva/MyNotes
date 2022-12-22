@@ -11,7 +11,7 @@ interface NoteDao {
     fun getAll(): List<Note>
 
     @Query("SELECT * FROM Notes WHERE id = :id")
-    fun getById(id: Long): Note
+    fun getById(id: String): Note
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(note: Note)

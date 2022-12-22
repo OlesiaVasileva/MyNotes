@@ -2,9 +2,9 @@ package com.olesix.mynotes
 
 object NotesList {
 
-    private val notes = fillList()
+    private var notes = mutableListOf<Note>()
 
-    private fun fillList(): MutableList<Note> {
+    /*private fun fillList(): MutableList<Note> {
         val note1 = Note(
             "01", "Список дел на сегодня",
             "Решить задачу на связный список", System.currentTimeMillis()
@@ -19,7 +19,7 @@ object NotesList {
         )
 
         return mutableListOf(note1, note2, note3)
-    }
+    }*/
 
     fun getListOfNotes(): MutableList<Note> {
         return notes

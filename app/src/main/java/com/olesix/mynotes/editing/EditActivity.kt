@@ -9,10 +9,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.olesix.mynotes.Note
-import com.olesix.mynotes.NotesList
 import com.olesix.mynotes.R
 import java.sql.Date
 import java.text.SimpleDateFormat
@@ -26,6 +26,8 @@ class EditActivity : AppCompatActivity() {
     private lateinit var editText: EditText
     private lateinit var textViewDate: TextView
     private lateinit var bottomAppBar: BottomAppBar
+    private lateinit var editViewModel: EditViewModel
+    private lateinit var note: Note
     var id: String? = null
     private val simpleDateFormat = SimpleDateFormat("dd.MM.yy HH:mm", Locale.getDefault())
 
@@ -45,17 +47,22 @@ class EditActivity : AppCompatActivity() {
         floatActButton.setOnClickListener {
             onBackPressed()
         }
+        editViewModel = EditViewModel(application)
         id = intent.getStringExtra(INTENT_ID)
         if (id != null) {
-            textViewDate.visibility = View.VISIBLE
-            val note = NotesList.getNoteById(id!!)
-            editTextHeader.setText(note.header)
-            editText.setText(note.text)
-            val date = Date(note.date)
-            textViewDate.text = this.getString(
-                R.string.date_display,
-                simpleDateFormat.format(date).toString()
-            )
+            editViewModel.getNoteById(id!!)
+            val noteObserver = Observer<Note> { note ->
+                this.note = note
+                textViewDate.visibility = View.VISIBLE
+                editTextHeader.setText(note.header)
+                editText.setText(note.text)
+                val date = Date(note.date)
+                textViewDate.text = this.getString(
+                    R.string.date_display,
+                    simpleDateFormat.format(date).toString()
+                )
+            }
+            editViewModel.note.observe(this, noteObserver)
         }
         bottomAppBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -79,8 +86,7 @@ class EditActivity : AppCompatActivity() {
                 getString(R.string.button_delete)
             ) { _, _ ->
                 if (id != null) {
-                    val note = NotesList.getListOfNotes().first { it.id == id }
-                    NotesList.deleteNote(note)
+                    editViewModel.deleteNote(note)
                 }
                 finish()
             }
@@ -121,8 +127,8 @@ class EditActivity : AppCompatActivity() {
         val text = editText.text.toString().trim()
         if (header.isNotEmpty() || text.isNotEmpty()) {
             val date = System.currentTimeMillis()
-            val note = Note(id, header, text, date)
-            NotesList.addNote(note)
+            val note = Note(id, header, text, date, getRandomColor())
+            editViewModel.addNote(note)
         }
     }
 
@@ -135,13 +141,14 @@ class EditActivity : AppCompatActivity() {
         if (id.isNullOrEmpty()) {
             addNewNote()
         } else {
-            val newNote = NotesList.getNoteById(id!!)
             if (editTextHeader.text.toString().isEmpty() && editText.text.toString().isEmpty()) {
-                NotesList.deleteNote(newNote)
-            } else if (editTextHeader.text.toString() != newNote.header ||
-                editText.text.toString() != newNote.text
+                editViewModel.deleteNote(note)
+            } else if (editTextHeader.text.toString() != note.header ||
+                editText.text.toString() != note.text
             ) {
-                updateNote(newNote)
+                note.header = editTextHeader.text.toString()
+                note.text = editText.text.toString()
+                updateNote(note)
             }
         }
     }
@@ -150,6 +157,14 @@ class EditActivity : AppCompatActivity() {
         newNote.header = editTextHeader.text.toString()
         newNote.text = editText.text.toString()
         newNote.date = System.currentTimeMillis()
-        NotesList.updateNote(newNote)
+        editViewModel.updateNote(newNote)
+    }
+
+    companion object {
+        val colors = listOf("#E2F3F0", "#C3D9FF", "#FFF5E6", "#F8D9DE", "#FDCCCA")
+    }
+
+    private fun getRandomColor(): String {
+        return colors.random()
     }
 }

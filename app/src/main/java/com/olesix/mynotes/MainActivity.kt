@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var imageEmptyScreen: ImageView
     private lateinit var textEmptyScreen: TextView
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,26 +47,27 @@ class MainActivity : AppCompatActivity() {
             Log.d(LOG_TAG, "Note.id = ${note.id}")
         }
         recyclerView.adapter = adapter
-        setData()
-    }
-
-    private fun setData() {
-        if (NotesList.getListOfNotes().isEmpty()) {
-            supportActionBar?.hide()
-            imageEmptyScreen.visibility = View.VISIBLE
-            textEmptyScreen.visibility = View.VISIBLE
-        } else {
-            supportActionBar?.show()
-            imageEmptyScreen.visibility = View.INVISIBLE
-            textEmptyScreen.visibility = View.INVISIBLE
-            recyclerView.visibility = View.VISIBLE
-            adapter.setData(NotesList.getListOfNotes())
+        val notesListObserver = Observer<List<Note>> { notes ->
+            if (notes != null) {
+                adapter.setData(notes as MutableList<Note>)
+                supportActionBar?.show()
+                imageEmptyScreen.visibility = View.INVISIBLE
+                textEmptyScreen.visibility = View.INVISIBLE
+                recyclerView.visibility = View.VISIBLE
+            } else {
+                supportActionBar?.hide()
+                imageEmptyScreen.visibility = View.VISIBLE
+                textEmptyScreen.visibility = View.VISIBLE
+            }
         }
+        mainViewModel = MainViewModel(application)
+        mainViewModel.getAllNotes()
+        mainViewModel.listOfNotes.observe(this, notesListObserver)
     }
 
     override fun onResume() {
+        mainViewModel.getAllNotes()
         super.onResume()
-        setData()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
