@@ -23,5 +23,6 @@
     <string name="button_cancel">Отмена</string>
     <string name="title_alert_dialog">Удаление заметки</string>
     <string name="search_hint">Search</string>
+    <string name="search_screen_empty_result">Ничего не найдено</string>
 
 </resources>

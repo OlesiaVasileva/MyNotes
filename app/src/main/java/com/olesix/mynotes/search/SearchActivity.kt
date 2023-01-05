@@ -13,17 +13,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.olesix.mynotes.*
 import com.olesix.mynotes.editing.EditActivity
 import android.text.Editable
-
 import android.text.TextWatcher
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 
 
 class SearchActivity : AppCompatActivity() {
 
-    private lateinit var adapter: NoteRecyclerAdapter
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var listOfFoundNotes: MutableList<Note>
+    private lateinit var searchEditText: EditText
+    private lateinit var imageEmptyScreen: ImageView
+    private lateinit var textEmptyScreen: TextView
 
-    private lateinit var editText: EditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -33,33 +34,39 @@ class SearchActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
-        editText = findViewById(R.id.search_edittext)
-        recyclerView = findViewById(R.id.recycler_view)
+        searchEditText = findViewById(R.id.search_edittext)
+        imageEmptyScreen = findViewById(R.id.image_empty_screen)
+        textEmptyScreen = findViewById(R.id.text_empty_screen)
+        val recyclerView: RecyclerView = findViewById(R.id.recycler_view)
         recyclerView.layoutManager = GridLayoutManager(this, 2)
-        adapter = NoteRecyclerAdapter { note ->
+        val adapter: NoteRecyclerAdapter = NoteRecyclerAdapter { note ->
             val intent = Intent(this@SearchActivity, EditActivity::class.java)
             intent.putExtra(INTENT_ID, note.id)
             startActivity(intent)
             Log.d(LOG_TAG, "Note.id = ${note.id}")
         }
         recyclerView.adapter = adapter
-        adapter.notes = NotesList.notes
-        editText.addTextChangedListener(object : TextWatcher {
+        adapter.setData(NotesList.getListOfNotes())
+        searchEditText.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
 
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
             override fun afterTextChanged(s: Editable) {
-                listOfFoundNotes = NotesList.getNotesBySearch(s.toString())
-                setData()
+                adapter.setData(NotesList.getNotesBySearch(s.toString()))
+                showImageEmptyScreen(NotesList.getNotesBySearch(s.toString()).isEmpty())
             }
         })
     }
 
-    private fun setData() {
-        listOfFoundNotes.sortByDescending { note -> note.data }
-        adapter.notes = listOfFoundNotes
-        adapter.notifyDataSetChanged()
+    private fun showImageEmptyScreen(listIsEmpty: Boolean) {
+        if (listIsEmpty) {
+            imageEmptyScreen.visibility = View.VISIBLE
+            textEmptyScreen.visibility = View.VISIBLE
+        } else {
+            imageEmptyScreen.visibility = View.INVISIBLE
+            textEmptyScreen.visibility = View.INVISIBLE
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -71,10 +78,10 @@ class SearchActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_cancel_search -> {
                 Log.d(LOG_TAG, "Cancel search clicked")
-                if (editText.text.isEmpty()) {
+                if (searchEditText.text.isEmpty()) {
                     onBackPressed()
                 } else {
-                    editText.text.clear()
+                    searchEditText.text.clear()
                 }
                 true
             }

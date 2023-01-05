@@ -2,9 +2,9 @@ package com.olesix.mynotes
 
 object NotesList {
 
-    val notes = fillList()
+    private var notes = mutableListOf<Note>()
 
-    private fun fillList(): MutableList<Note> {
+    /*private fun fillList(): MutableList<Note> {
         val note1 = Note(
             "01", "Список дел на сегодня",
             "Решить задачу на связный список", System.currentTimeMillis()
@@ -19,6 +19,10 @@ object NotesList {
         )
 
         return mutableListOf(note1, note2, note3)
+    }*/
+
+    fun getListOfNotes(): MutableList<Note> {
+        return notes
     }
 
     fun addNote(note: Note) {
@@ -34,13 +38,8 @@ object NotesList {
     }
 
     fun updateNote(newNote: Note) {
-        notes.forEach {
-            if (it.id == newNote.id) {
-                it.header = newNote.header
-                it.text = newNote.text
-                it.data = newNote.data
-            }
-        }
+        deleteNote(getNoteById(newNote.id))
+        addNote(newNote)
     }
 
     fun getNotesBySearch(inputString: String) : MutableList<Note> {
