@@ -1,7 +1,7 @@
 package com.olesix.mynotes.db
 
 import androidx.room.*
-import com.olesix.mynotes.Note
+import com.olesix.mynotes.model.Note
 
 
 @Dao

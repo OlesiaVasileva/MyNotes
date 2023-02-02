@@ -1,4 +1,4 @@
-package com.olesix.mynotes
+package com.olesix.mynotes.mainscreen
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -13,9 +13,13 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.olesix.mynotes.R
+import com.olesix.mynotes.adapter.NoteRecyclerAdapter
 import com.olesix.mynotes.editing.EditActivity
+import com.olesix.mynotes.model.Note
 import com.olesix.mynotes.search.SearchActivity
-
+import com.olesix.mynotes.viewmodel.MainViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 const val LOG_TAG = "LOG_MY_NOTES"
 const val INTENT_ID = "NOTE_ID"
@@ -26,7 +30,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var imageEmptyScreen: ImageView
     private lateinit var textEmptyScreen: TextView
-    private lateinit var mainViewModel: MainViewModel
+    private val mainViewModel: MainViewModel by viewModel()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +65,6 @@ class MainActivity : AppCompatActivity() {
                 textEmptyScreen.visibility = View.INVISIBLE
             }
         }
-        mainViewModel = MainViewModel(application)
         mainViewModel.getAllNotes()
         mainViewModel.listOfNotes.observe(this, notesListObserver)
     }
@@ -70,7 +74,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }

@@ -1,6 +1,6 @@
 package com.olesix.mynotes.repository
 
-import com.olesix.mynotes.Note
+import com.olesix.mynotes.model.Note
 import com.olesix.mynotes.db.NoteDao
 
 class NoteRepository(private val noteDao: NoteDao) {

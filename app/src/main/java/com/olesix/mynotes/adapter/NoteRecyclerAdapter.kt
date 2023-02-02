@@ -1,4 +1,4 @@
-package com.olesix.mynotes
+package com.olesix.mynotes.adapter
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.olesix.mynotes.model.Note
+import com.olesix.mynotes.R
 import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.*

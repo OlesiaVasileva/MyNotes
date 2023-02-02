@@ -12,10 +12,10 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.olesix.mynotes.Note
+import com.olesix.mynotes.model.Note
 import com.olesix.mynotes.R
-import com.olesix.mynotes.db.AppDatabase
-import com.olesix.mynotes.repository.NoteRepository
+import com.olesix.mynotes.viewmodel.EditViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,7 +28,7 @@ class EditActivity : AppCompatActivity() {
     private lateinit var editText: EditText
     private lateinit var textViewDate: TextView
     private lateinit var bottomAppBar: BottomAppBar
-    private lateinit var editViewModel: EditViewModel
+    private val editViewModel: EditViewModel by viewModel()
     private lateinit var note: Note
     var id: String? = null
     private val simpleDateFormat = SimpleDateFormat("dd.MM.yy HH:mm", Locale.getDefault())
@@ -49,8 +49,6 @@ class EditActivity : AppCompatActivity() {
         floatActButton.setOnClickListener {
             onBackPressed()
         }
-        val noteRepository = NoteRepository(AppDatabase.getDatabase(application).noteDao())
-        editViewModel = EditViewModel(noteRepository)
         id = intent.getStringExtra(INTENT_ID)
         if (id != null) {
             editViewModel.getNoteById(id!!)

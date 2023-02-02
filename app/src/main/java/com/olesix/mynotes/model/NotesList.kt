@@ -1,4 +1,4 @@
-package com.olesix.mynotes
+package com.olesix.mynotes.model
 
 object NotesList {
 

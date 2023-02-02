@@ -17,7 +17,10 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-
+import com.olesix.mynotes.adapter.NoteRecyclerAdapter
+import com.olesix.mynotes.mainscreen.INTENT_ID
+import com.olesix.mynotes.mainscreen.LOG_TAG
+import com.olesix.mynotes.model.NotesList
 
 class SearchActivity : AppCompatActivity() {
 
@@ -69,7 +72,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.search_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }

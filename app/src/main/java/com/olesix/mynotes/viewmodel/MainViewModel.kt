@@ -1,19 +1,15 @@
-package com.olesix.mynotes
+package com.olesix.mynotes.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.olesix.mynotes.db.AppDatabase
+import com.olesix.mynotes.model.Note
 import com.olesix.mynotes.repository.NoteRepository
 
-class MainViewModel(application: Application) : ViewModel() {
+class MainViewModel(private val noteRepository: NoteRepository) : ViewModel() {
 
     val listOfNotes: MutableLiveData<List<Note>> by lazy {
         MutableLiveData<List<Note>>()
     }
-
-    private var noteRepository: NoteRepository =
-        NoteRepository(AppDatabase.getDatabase(application).noteDao())
 
     fun getAllNotes() {
         noteRepository.getAll().sortByDescending { note -> note.date }

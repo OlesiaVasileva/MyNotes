@@ -1,8 +1,8 @@
-package com.olesix.mynotes.editing
+package com.olesix.mynotes.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.olesix.mynotes.Note
+import com.olesix.mynotes.model.Note
 import com.olesix.mynotes.repository.NoteRepository
 
 class EditViewModel(private val noteRepository: NoteRepository) : ViewModel() {
