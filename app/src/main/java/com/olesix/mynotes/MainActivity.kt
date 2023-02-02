@@ -48,16 +48,16 @@ class MainActivity : AppCompatActivity() {
         }
         recyclerView.adapter = adapter
         val notesListObserver = Observer<List<Note>> { notes ->
-            if (notes != null) {
+            if (notes.isNullOrEmpty()) {
+                supportActionBar?.hide()
+                adapter.setData(mutableListOf())
+                imageEmptyScreen.visibility = View.VISIBLE
+                textEmptyScreen.visibility = View.VISIBLE
+            } else {
                 adapter.setData(notes as MutableList<Note>)
                 supportActionBar?.show()
                 imageEmptyScreen.visibility = View.INVISIBLE
                 textEmptyScreen.visibility = View.INVISIBLE
-                recyclerView.visibility = View.VISIBLE
-            } else {
-                supportActionBar?.hide()
-                imageEmptyScreen.visibility = View.VISIBLE
-                textEmptyScreen.visibility = View.VISIBLE
             }
         }
         mainViewModel = MainViewModel(application)

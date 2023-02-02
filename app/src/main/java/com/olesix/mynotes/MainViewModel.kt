@@ -16,6 +16,7 @@ class MainViewModel(application: Application) : ViewModel() {
         NoteRepository(AppDatabase.getDatabase(application).noteDao())
 
     fun getAllNotes() {
+        noteRepository.getAll().sortByDescending { note -> note.date }
         listOfNotes.postValue(noteRepository.getAll())
     }
 }

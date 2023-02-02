@@ -8,7 +8,7 @@ import com.olesix.mynotes.Note
 interface NoteDao {
 
     @Query("SELECT * FROM Notes")
-    fun getAll(): List<Note>
+    fun getAll(): MutableList<Note>
 
     @Query("SELECT * FROM Notes WHERE id = :id")
     fun getById(id: String): Note

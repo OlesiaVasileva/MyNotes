@@ -5,7 +5,7 @@ import com.olesix.mynotes.db.NoteDao
 
 class NoteRepository(private val noteDao: NoteDao) {
 
-    fun getAll(): List<Note> {
+    fun getAll(): MutableList<Note> {
         return noteDao.getAll()
     }
 

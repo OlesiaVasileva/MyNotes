@@ -15,7 +15,7 @@ import java.util.*
 class NoteRecyclerAdapter(private val onItemClick: ((Note) -> Unit)?) : RecyclerView
 .Adapter<NoteRecyclerAdapter.NoteViewHolder>() {
 
-    private lateinit var notes: List<Note>
+    private var notes = mutableListOf<Note>()
     private val simpleDateFormat = SimpleDateFormat("dd.MM.yy", Locale.getDefault())
 
     class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -46,7 +46,6 @@ class NoteRecyclerAdapter(private val onItemClick: ((Note) -> Unit)?) : Recycler
     override fun getItemCount() = notes.size
 
     fun setData(listOfNotes: MutableList<Note>) {
-        listOfNotes.sortByDescending { note -> note.date }
         notes = listOfNotes
         notifyDataSetChanged()
     }

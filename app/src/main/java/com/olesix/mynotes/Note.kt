@@ -10,5 +10,5 @@ data class Note(
     var header: String,
     var text: String,
     var date: Long,
-    val color: String
+    var color: String
 )

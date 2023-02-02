@@ -14,6 +14,8 @@ import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.olesix.mynotes.Note
 import com.olesix.mynotes.R
+import com.olesix.mynotes.db.AppDatabase
+import com.olesix.mynotes.repository.NoteRepository
 import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.*
@@ -47,7 +49,8 @@ class EditActivity : AppCompatActivity() {
         floatActButton.setOnClickListener {
             onBackPressed()
         }
-        editViewModel = EditViewModel(application)
+        val noteRepository = NoteRepository(AppDatabase.getDatabase(application).noteDao())
+        editViewModel = EditViewModel(noteRepository)
         id = intent.getStringExtra(INTENT_ID)
         if (id != null) {
             editViewModel.getNoteById(id!!)
@@ -127,7 +130,7 @@ class EditActivity : AppCompatActivity() {
         val text = editText.text.toString().trim()
         if (header.isNotEmpty() || text.isNotEmpty()) {
             val date = System.currentTimeMillis()
-            val note = Note(id, header, text, date, getRandomColor())
+            val note = Note(id, header, text, date, "")
             editViewModel.addNote(note)
         }
     }
@@ -158,13 +161,5 @@ class EditActivity : AppCompatActivity() {
         newNote.text = editText.text.toString()
         newNote.date = System.currentTimeMillis()
         editViewModel.updateNote(newNote)
-    }
-
-    companion object {
-        val colors = listOf("#E2F3F0", "#C3D9FF", "#FFF5E6", "#F8D9DE", "#FDCCCA")
-    }
-
-    private fun getRandomColor(): String {
-        return colors.random()
     }
 }
