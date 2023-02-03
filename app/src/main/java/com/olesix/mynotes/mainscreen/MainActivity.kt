@@ -3,12 +3,15 @@ package com.olesix.mynotes.mainscreen
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.HandlerThread
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -67,6 +70,31 @@ class MainActivity : AppCompatActivity() {
         }
         mainViewModel.getAllNotes()
         mainViewModel.listOfNotes.observe(this, notesListObserver)
+
+        handlerThreadExample("okHttpClient", "retrofit")
+    }
+
+    fun handlerThreadExample(client: String, request: String): String {
+        var result = ""
+        val handlerThread = HandlerThread("NetworkRequestThread")
+        handlerThread.start()
+
+        val handler = Handler(handlerThread.looper)
+        val runnable = Runnable {
+            result = networkRequest(client, request)
+            Toast.makeText(this, result, Toast.LENGTH_LONG).show()
+        }
+        handler.post(runnable)
+        Log.d(LOG_TAG, "handlerThreadExample: ${Thread.currentThread().name}")
+
+        return result
+    }
+
+    fun networkRequest(client: String, request: String): String {
+        Log.d(LOG_TAG, "networkRequest: ${Thread.currentThread().name}")
+        Thread.sleep(5000)
+
+        return "Response after 5 sec"
     }
 
     override fun onResume() {
