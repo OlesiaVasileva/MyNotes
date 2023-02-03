@@ -2,8 +2,10 @@ package com.olesix.mynotes.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.olesix.mynotes.model.Note
 import com.olesix.mynotes.repository.NoteRepository
+import kotlinx.coroutines.launch
 
 class EditViewModel(private val noteRepository: NoteRepository) : ViewModel() {
 
@@ -12,20 +14,28 @@ class EditViewModel(private val noteRepository: NoteRepository) : ViewModel() {
     }
 
     fun addNote(note: Note) {
-        note.color = getRandomColor()
-        noteRepository.insert(note)
+        viewModelScope.launch {
+            note.color = getRandomColor()
+            noteRepository.insert(note)
+        }
     }
 
     fun updateNote(note: Note) {
-        noteRepository.update(note)
+        viewModelScope.launch {
+            noteRepository.update(note)
+        }
     }
 
     fun deleteNote(note: Note) {
-        noteRepository.delete(note)
+        viewModelScope.launch {
+            noteRepository.delete(note)
+        }
     }
 
     fun getNoteById(id: String) {
-        note.postValue(noteRepository.getById(id))
+        viewModelScope.launch {
+            note.postValue(noteRepository.getById(id))
+        }
     }
 
     companion object {
