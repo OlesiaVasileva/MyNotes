@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var imageEmptyScreen: ImageView
     private lateinit var textEmptyScreen: TextView
     private val mainViewModel: MainViewModel by viewModel()
+    private lateinit var netRequestResult: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,23 +75,26 @@ class MainActivity : AppCompatActivity() {
         handlerThreadExample("okHttpClient", "retrofit")
     }
 
-    fun handlerThreadExample(client: String, request: String): String {
-        var result = ""
+    private fun handlerThreadExample(client: String, request: String) {
         val handlerThread = HandlerThread("NetworkRequestThread")
         handlerThread.start()
 
         val handler = Handler(handlerThread.looper)
         val runnable = Runnable {
-            result = networkRequest(client, request)
-            Toast.makeText(this, result, Toast.LENGTH_LONG).show()
+            netRequestResult = networkRequest(client, request)
+
+            this@MainActivity.runOnUiThread {
+                if (netRequestResult.isNotEmpty()) {
+                    Log.d(LOG_TAG, "netRequestResult: ${Thread.currentThread().name}")
+                    Toast.makeText(this, netRequestResult, Toast.LENGTH_LONG).show()
+                }
+            }
+            handler.removeCallbacksAndMessages(null)
         }
         handler.post(runnable)
-        Log.d(LOG_TAG, "handlerThreadExample: ${Thread.currentThread().name}")
-
-        return result
     }
 
-    fun networkRequest(client: String, request: String): String {
+    private fun networkRequest(client: String, request: String): String {
         Log.d(LOG_TAG, "networkRequest: ${Thread.currentThread().name}")
         Thread.sleep(5000)
 
