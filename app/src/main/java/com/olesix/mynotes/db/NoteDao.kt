@@ -1,24 +1,25 @@
 package com.olesix.mynotes.db
 
 import androidx.room.*
-import com.olesix.mynotes.Note
+import com.olesix.mynotes.model.Note
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
 interface NoteDao {
 
     @Query("SELECT * FROM Notes")
-    fun getAll(): List<Note>
+    suspend fun getAll(): MutableList<Note>
 
     @Query("SELECT * FROM Notes WHERE id = :id")
-    fun getById(id: String): Note
+    suspend fun getById(id: String): Note
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(note: Note)
+    suspend fun insert(note: Note)
 
     @Update
-    fun update(note: Note)
+    suspend fun update(note: Note)
 
     @Delete
-    fun delete(note: Note)
+    suspend fun delete(note: Note)
 }

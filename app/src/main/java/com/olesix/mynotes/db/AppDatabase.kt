@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.olesix.mynotes.Note
+import com.olesix.mynotes.model.Note
 
 @Database(entities = [Note::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
@@ -25,14 +25,10 @@ abstract class AppDatabase : RoomDatabase() {
                     val instance = Room.databaseBuilder(
                         context.applicationContext,
                         AppDatabase::class.java, "NotesDatabase"
-                    ).allowMainThreadQueries().build()
+                    ).build()
                     INSTANCE = instance
                     return instance
                 }
-        }
-
-        fun destroyInstance() {
-            INSTANCE = null
         }
     }
 }

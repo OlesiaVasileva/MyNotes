@@ -12,8 +12,10 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.olesix.mynotes.Note
+import com.olesix.mynotes.model.Note
 import com.olesix.mynotes.R
+import com.olesix.mynotes.viewmodel.EditViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.*
@@ -26,7 +28,7 @@ class EditActivity : AppCompatActivity() {
     private lateinit var editText: EditText
     private lateinit var textViewDate: TextView
     private lateinit var bottomAppBar: BottomAppBar
-    private lateinit var editViewModel: EditViewModel
+    private val editViewModel: EditViewModel by viewModel()
     private lateinit var note: Note
     var id: String? = null
     private val simpleDateFormat = SimpleDateFormat("dd.MM.yy HH:mm", Locale.getDefault())
@@ -47,7 +49,6 @@ class EditActivity : AppCompatActivity() {
         floatActButton.setOnClickListener {
             onBackPressed()
         }
-        editViewModel = EditViewModel(application)
         id = intent.getStringExtra(INTENT_ID)
         if (id != null) {
             editViewModel.getNoteById(id!!)
@@ -127,7 +128,7 @@ class EditActivity : AppCompatActivity() {
         val text = editText.text.toString().trim()
         if (header.isNotEmpty() || text.isNotEmpty()) {
             val date = System.currentTimeMillis()
-            val note = Note(id, header, text, date, getRandomColor())
+            val note = Note(id, header, text, date, "")
             editViewModel.addNote(note)
         }
     }
@@ -158,13 +159,5 @@ class EditActivity : AppCompatActivity() {
         newNote.text = editText.text.toString()
         newNote.date = System.currentTimeMillis()
         editViewModel.updateNote(newNote)
-    }
-
-    companion object {
-        val colors = listOf("#E2F3F0", "#C3D9FF", "#FFF5E6", "#F8D9DE", "#FDCCCA")
-    }
-
-    private fun getRandomColor(): String {
-        return colors.random()
     }
 }

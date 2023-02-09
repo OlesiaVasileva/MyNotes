@@ -1,4 +1,4 @@
-package com.olesix.mynotes
+package com.olesix.mynotes.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -10,5 +10,5 @@ data class Note(
     var header: String,
     var text: String,
     var date: Long,
-    val color: String
+    var color: String
 )

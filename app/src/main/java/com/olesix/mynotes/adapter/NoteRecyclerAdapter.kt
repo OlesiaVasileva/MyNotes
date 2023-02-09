@@ -1,4 +1,4 @@
-package com.olesix.mynotes
+package com.olesix.mynotes.adapter
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.olesix.mynotes.model.Note
+import com.olesix.mynotes.R
 import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.*
@@ -15,7 +17,7 @@ import java.util.*
 class NoteRecyclerAdapter(private val onItemClick: ((Note) -> Unit)?) : RecyclerView
 .Adapter<NoteRecyclerAdapter.NoteViewHolder>() {
 
-    private lateinit var notes: List<Note>
+    private var notes = mutableListOf<Note>()
     private val simpleDateFormat = SimpleDateFormat("dd.MM.yy", Locale.getDefault())
 
     class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -46,7 +48,6 @@ class NoteRecyclerAdapter(private val onItemClick: ((Note) -> Unit)?) : Recycler
     override fun getItemCount() = notes.size
 
     fun setData(listOfNotes: MutableList<Note>) {
-        listOfNotes.sortByDescending { note -> note.date }
         notes = listOfNotes
         notifyDataSetChanged()
     }

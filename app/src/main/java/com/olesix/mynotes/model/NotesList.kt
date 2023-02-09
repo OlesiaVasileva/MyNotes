@@ -1,4 +1,4 @@
-package com.olesix.mynotes
+package com.olesix.mynotes.model
 
 object NotesList {
 
@@ -38,8 +38,7 @@ object NotesList {
     }
 
     fun updateNote(newNote: Note) {
-        deleteNote(getNoteById(newNote.id))
-        addNote(newNote)
+        notes[notes.indexOf(newNote)] = newNote
     }
 
     fun getNotesBySearch(inputString: String) : MutableList<Note> {

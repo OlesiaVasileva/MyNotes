@@ -1,27 +1,43 @@
 package com.olesix.mynotes.repository
 
-import com.olesix.mynotes.Note
+import android.util.Log
+import com.olesix.mynotes.model.Note
 import com.olesix.mynotes.db.NoteDao
+import com.olesix.mynotes.mainscreen.LOG_TAG
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class NoteRepository(private val noteDao: NoteDao) {
 
-    fun getAll(): List<Note> {
-        return noteDao.getAll()
+    suspend fun getAll(): MutableList<Note> {
+        return withContext(Dispatchers.IO) {
+            Log.d(LOG_TAG, "getAll: ${Thread.currentThread().name}")
+            noteDao.getAll()
+        }
     }
 
-    fun getById(id: String): Note {
-        return noteDao.getById(id)
+    suspend fun getById(id: String): Note {
+        return withContext(Dispatchers.IO) {
+            Log.d(LOG_TAG, "getById: ${Thread.currentThread().name}")
+            noteDao.getById(id)
+        }
     }
 
-    fun insert(note: Note) {
-        return noteDao.insert(note)
+    suspend fun insert(note: Note) {
+        return withContext(Dispatchers.IO) {
+            noteDao.insert(note)
+        }
     }
 
-    fun update(note: Note) {
-        return noteDao.update(note)
+    suspend fun update(note: Note) {
+        return withContext(Dispatchers.IO) {
+            noteDao.update(note)
+        }
     }
 
-    fun delete(note: Note) {
-        return noteDao.delete(note)
+    suspend fun delete(note: Note) {
+        return withContext(Dispatchers.IO) {
+            noteDao.delete(note)
+        }
     }
 }
