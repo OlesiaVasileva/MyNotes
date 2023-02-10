@@ -2,8 +2,6 @@ package com.olesix.mynotes.db
 
 import androidx.room.*
 import com.olesix.mynotes.model.Note
-import kotlinx.coroutines.flow.Flow
-
 
 @Dao
 interface NoteDao {
