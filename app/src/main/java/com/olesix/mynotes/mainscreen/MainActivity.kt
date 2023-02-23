@@ -1,14 +1,15 @@
 package com.olesix.mynotes.mainscreen
 
 import android.content.Intent
+import android.os.*
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +21,8 @@ import com.olesix.mynotes.model.Note
 import com.olesix.mynotes.search.SearchActivity
 import com.olesix.mynotes.viewmodel.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 
 const val LOG_TAG = "LOG_MY_NOTES"
 const val INTENT_ID = "NOTE_ID"
@@ -32,6 +35,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var textEmptyScreen: TextView
     private val mainViewModel: MainViewModel by viewModel()
 
+    private lateinit var NET_REQUEST_RESPONSE: String
+    private lateinit var mainThreadHandler: Handler
+    private lateinit var uIThreadHandler: Handler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,11 +73,64 @@ class MainActivity : AppCompatActivity() {
         }
         mainViewModel.getAllNotes()
         mainViewModel.listOfNotes.observe(this, notesListObserver)
+
+        makeRequestUIThread()
+    }
+
+    private fun makeRequestUIThread() {
+        val handlerThread = HandlerThread("UIThread")
+        handlerThread.start()
+        uIThreadHandler = Handler(handlerThread.looper)
+        uIThreadHandler.post {
+            netRequest()
+        }
+    }
+
+    private fun netRequest() {
+        Log.d(LOG_TAG, "networkRequest: ${Thread.currentThread().name}")
+        Thread.sleep(5000)
+        val newThread = Thread {
+            setResult("Response after 5 sec")
+        }
+        newThread.start()
+    }
+
+    private fun setResult(result: String) {
+        Log.d(LOG_TAG, "setResult: ${Thread.currentThread().name}")
+        synchSetResult(result)
+        postResultMainThread()
+    }
+
+    private fun synchSetResult(result: String) {
+        val lock = ReentrantLock()
+        lock.withLock {
+            NET_REQUEST_RESPONSE = result
+        }
+    }
+
+    private fun postResultMainThread() {
+        mainThreadHandler = Handler(Looper.getMainLooper())
+        mainThreadHandler.post {
+            postResult()
+        }
+    }
+
+    private fun postResult() {
+        Log.d(LOG_TAG, "postResult: ${Thread.currentThread().name}")
+        if (!NET_REQUEST_RESPONSE.isNullOrEmpty()) {
+            Toast.makeText(this, NET_REQUEST_RESPONSE, Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onResume() {
         mainViewModel.getAllNotes()
         super.onResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        uIThreadHandler.removeCallbacksAndMessages(null)
+        mainThreadHandler.removeCallbacksAndMessages(null)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
